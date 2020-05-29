@@ -1,6 +1,6 @@
-import crypto from "crypto";
-import { v4 as uuidv4 } from "uuid";
-const mongoose = require("mongoose");
+const crypto = require("crypto");
+const { v4: uuidv4 } = require("uuid");
+var mongoose = require("mongoose");
 var userSchema = new mongoose.Schema(
   {
     name: {
@@ -43,7 +43,7 @@ var userSchema = new mongoose.Schema(
 );
 
 userSchema
-  .virtual()
+  .virtual("password")
   .set(function (password) {
     this._password = password;
     this.salt = uuidv4();
@@ -53,7 +53,7 @@ userSchema
     return this._password;
   });
 
-userSchema.method = {
+userSchema.methods = {
   authenticate: function (password) {
     return this.securePassword(password) === this.encry_password;
   },
