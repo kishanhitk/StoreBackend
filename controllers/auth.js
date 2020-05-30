@@ -27,6 +27,7 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res) => {
   const { email, password } = req.body;
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res
@@ -34,7 +35,9 @@ exports.signin = (req, res) => {
       .json({ errors: errors.array().map((arr) => arr.msg) });
   }
   User.findOne({ email }, (err, user) => {
-    if (err) res.status(404).json({ error: "This email does not exist" });
+    if (!user || err) {
+      return res.status(404).json({ error: "This email does not exist" });
+    }
     if (!user.authenticate(password)) {
       return res.status(401).json({ error: "Email and password do not match" });
     }
@@ -60,7 +63,29 @@ exports.signin = (req, res) => {
 };
 
 exports.signout = (req, res) => {
+  res.clearCookie("token");
   res.json({
     message: "User Signed Out",
   });
+};
+
+//Protected Routes
+exports.isSignedIn = expressJwt({
+  secret: process.env.COOKIE,
+  userProperty: "auth",
+});
+
+//CUstom Middleware
+exports.isAuthenticated = (req, res, next) => {
+  let checker = req.profile && req.auth && req._id === req.profile._id;
+  if (!checker) {
+    return res.status(403).json({ err: "ACCESS DENIED" });
+  }
+  next();
+};
+exports.isAdmin = (req, res, next) => {
+  if (req.profile.role === 0) {
+    res.status(403).json({ err: "You are not admin" });
+  }
+  next();
 };
