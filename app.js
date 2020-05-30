@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
+
+//Routes
+const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
 //Making connection to DB
 mongoose
@@ -23,6 +26,7 @@ app.use(cors());
 
 //Routes
 app.use("/api", authRoutes);
+app.use("/api", userRoutes);
 
 //Port
 const port = 4000;
