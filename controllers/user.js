@@ -48,7 +48,7 @@ exports.userPurchaseList = (req, res) => {
     .exec((err, order) => {
       if (err) {
         return res.status(400).json({
-          err: "No orders found",
+          err: "No orders found in this user",
         });
       }
       res.json({
