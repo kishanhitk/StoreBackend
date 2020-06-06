@@ -10,6 +10,7 @@ require("dotenv").config();
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
 const categoryRoute = require("./routes/category");
+const productRoute = require("./routes/product");
 
 //Making connection to DB
 mongoose
@@ -30,6 +31,7 @@ app.use(cors());
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoute);
+app.use("/api", productRoute);
 
 //Port
 const port = 4000;
