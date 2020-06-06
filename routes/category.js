@@ -9,11 +9,14 @@ const {
   getAllCategories,
   getCategory,
   updateCategory,
+  removeCategory,
 } = require("../controllers/category");
 
+//Params
 router.param("userId", getUserById);
 router.param("categoryId", getCategoryById);
 
+//Create Category
 router.post(
   "category/create/:usedID",
   isSignedIn,
@@ -22,9 +25,11 @@ router.post(
   createCategory
 );
 
+//Actual Routes
 router.get("/category/:categoryID", getCategory);
 router.get("/categories", getAllCategories);
 
+//UpdateCategory
 router.put(
   "category/:categoryId/:usedID",
   isSignedIn,
@@ -33,4 +38,12 @@ router.put(
   updateCategory
 );
 
+//Delete Category
+router.delete(
+  "category/:categoryId/:usedID",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  removeCategory
+);
 module.exports = router;
