@@ -26,12 +26,12 @@ router.post(
 );
 
 //Actual Routes
-router.get("/category/:categoryID", getCategory);
+router.get("/category/:categoryId", getCategory);
 router.get("/categories", getAllCategories);
 
 //UpdateCategory
 router.put(
-  "/category/:categoryId/:usedID",
+  "/category/:categoryId/:userId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -40,7 +40,7 @@ router.put(
 
 //Delete Category
 router.delete(
-  "/category/:categoryId/:usedID",
+  "/category/:categoryId/:userId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
