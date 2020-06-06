@@ -18,7 +18,7 @@ router.param("categoryId", getCategoryById);
 
 //Create Category
 router.post(
-  "category/create/:usedID",
+  "/category/create/:userId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -31,7 +31,7 @@ router.get("/categories", getAllCategories);
 
 //UpdateCategory
 router.put(
-  "category/:categoryId/:usedID",
+  "/category/:categoryId/:usedID",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -40,7 +40,7 @@ router.put(
 
 //Delete Category
 router.delete(
-  "category/:categoryId/:usedID",
+  "/category/:categoryId/:usedID",
   isSignedIn,
   isAuthenticated,
   isAdmin,
