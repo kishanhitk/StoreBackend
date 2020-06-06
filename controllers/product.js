@@ -28,6 +28,10 @@ exports.createProduct = (req, res) => {
   form.parse(req, (err, fields, file) => {
     if (err) return res.status(400).json("Saving to DB failed");
 
+    const { price, name, description, category, stock } = fields;
+    if (!name || !price || !description || !category || !stock) {
+      res.status(400).json({ err: "Please include all fields" });
+    }
     let product = new Product(fields);
     if (file.photo) {
       if (file.photo.size > 300000) {
