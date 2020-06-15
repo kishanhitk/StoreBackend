@@ -5,6 +5,8 @@ const {
   getProductById,
   getAllProducts,
   createProduct,
+  getProduct,
+  photo,
 } = require("../controllers/product");
 const { getUserById } = require("../controllers/user");
 const { isSignedIn, isAdmin, isAuthenticated } = require("../controllers/auth");
@@ -21,5 +23,7 @@ router.post(
 );
 
 router.get("/products", getAllProducts);
+router.get("/products/:productId", getProduct);
+router.get("/products/photo/:productId", photo);
 
-module.exports = router; 
+module.exports = router;
