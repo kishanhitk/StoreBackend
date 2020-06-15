@@ -2,6 +2,7 @@ const Product = require("../models/product");
 const formidale = require("formidable");
 const _ = require("lodash");
 const fs = require("fs");
+// const { sortBy } = require("lodash");
 
 exports.getProductById = (req, res, id, next) => {
   Product.findById(id)
@@ -11,14 +12,6 @@ exports.getProductById = (req, res, id, next) => {
       req.product = product;
       next();
     });
-};
-
-exports.getAllProducts = (req, res) => {
-  Product.find().exec((err, products) => {
-    if (err || !products)
-      return res.status(400).json({ err: "No Products Found" });
-    res.json(products);
-  });
 };
 
 exports.createProduct = (req, res) => {
@@ -57,4 +50,52 @@ exports.photo = (req, res, next) => {
     return res.send(req.product.photo.data);
   }
   next();
+};
+
+exports.deleteProduct = (req, res) => {
+  let product = req.product;
+  product.remove((err, deletedProduct) => {
+    if (err)
+      res.status(400).json({ error: `Failed to delete ${product.name}` });
+    res.json({ message: `${product.name} deleted succesfully`, deleteProduct });
+  });
+};
+
+exports.updateProduct = (req, res) => {
+  let form = new formidale.IncomingForm();
+  form.keepExtensions = true;
+
+  form.parse(req, (err, fields, file) => {
+    if (err) return res.status(400).json("Saving to DB failed");
+
+    let product = req.product;
+    product = _.extend(product, fields);
+    if (file.photo) {
+      if (file.photo.size > 3000000) {
+        return res.status(400).json({ err: "File Size too big" });
+      }
+      product.photo.data = fs.readFileSync(file.photo.path);
+      product.photo.contentType = file.photo.type;
+    }
+    product.save((err, product) => {
+      if (err) return res.status(400).json({ err: "Updatation Failed" });
+      res.json(product);
+    });
+  });
+};
+
+//Product Listing
+exports.getAllProducts = (req, res) => {
+  let limit = req.query.limit ? parseInt(req.query.limit) : 8;
+  let sortBy = req.query.sort ? req.query.sort : "_id";
+  Product.find()
+    .select("-photo")
+    .populate("category")
+    .sort([[sortBy, "asc"]])
+    .limit(limit)
+    .exec((err, products) => {
+      if (err || !products)
+        return res.status(400).json({ err: "No Products Found" });
+      res.json(products);
+    });
 };
