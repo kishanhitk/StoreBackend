@@ -1,30 +1,28 @@
-const mongoose = require("mongoose");
-const express = require("express");
+import { connect } from "mongoose";
+import express, { json } from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 const app = express();
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
 require("dotenv").config();
 
 //Routes
-const userRoutes = require("./routes/user");
-const authRoutes = require("./routes/auth");
-const categoryRoute = require("./routes/category");
-const productRoute = require("./routes/product");
-const orderRoute = require("./routes/order");
+import userRoutes from "./routes/user";
+import authRoutes from "./routes/auth";
+import categoryRoute from "./routes/category";
+import productRoute from "./routes/product";
+import orderRoute from "./routes/order";
 
 //Making connection to DB
-mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  })
+connect(process.env.DATABASE, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+})
   .then(() => console.log("DB CONNECTED"))
   .catch((e) => console.log(`ERROR ${e}`));
 
 //Middlewares
-app.use(bodyParser.json());
+app.use(json());
 app.use(cookieParser());
 app.use(cors());
 
