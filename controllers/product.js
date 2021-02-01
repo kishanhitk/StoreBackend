@@ -57,7 +57,7 @@ exports.deleteProduct = (req, res) => {
   product.remove((err, deletedProduct) => {
     if (err)
       res.status(400).json({ error: `Failed to delete ${product.name}` });
-    res.json({ message: `${product.name} deleted succesfully`, deleteProduct });
+    res.json({ message: `${product.name} deleted succesfully`, deletedProduct });
   });
 };
 

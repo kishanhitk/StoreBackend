@@ -9,7 +9,7 @@ const {
   photo,
   updateProduct,
   deleteProduct,
-  getAllUniqueCategories
+  getAllUniqueCategories,
 } = require("../controllers/product");
 const { getUserById } = require("../controllers/user");
 const { isSignedIn, isAdmin, isAuthenticated } = require("../controllers/auth");
